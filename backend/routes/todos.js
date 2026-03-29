@@ -197,7 +197,7 @@ router.get('/export/pdf', auth, async (req, res) => {
       doc.switchToPage(i);
       doc.fontSize(8).fillColor('#94a3b8')
          .text(
-           `Taskflow Export · ${dateStr} · ${todos.length} Aufgabe(n) · Seite ${i + 1} von ${pageCount}`,
+           `Taskira Export · ${dateStr} · ${todos.length} Aufgabe(n) · Seite ${i + 1} von ${pageCount}`,
            40, pageH - 30, { align: 'center', width: pageW - 80, lineBreak: false }
          );
     }
