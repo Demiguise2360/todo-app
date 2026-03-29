@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taskflow · Deine Aufgaben</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-bg">
+    <div class="auth-blob blob1"></div>
+    <div class="auth-blob blob2"></div>
+    <div class="auth-blob blob3"></div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">Taskflow</span>
+    </div>
+    <p class="auth-tagline">Deine Aufgaben. Dein Tempo.</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Anmelden</button>
+      <button class="auth-tab" data-tab="register">Registrieren</button>
+    </div>
+
+    <form id="login-form" class="auth-form">
+      <div class="field">
+        <label>E-Mail</label>
+        <input type="email" id="login-email" placeholder="deine@email.ch" required />
+      </div>
+      <div class="field">
+        <label>Passwort</label>
+        <input type="password" id="login-password" placeholder="••••••••" required />
+      </div>
+      <div class="auth-error" id="login-error"></div>
+      <button type="submit" class="btn-primary btn-full">Einloggen</button>
+    </form>
+
+    <form id="register-form" class="auth-form hidden">
+      <div class="field">
+        <label>Benutzername</label>
+        <input type="text" id="reg-username" placeholder="maxmuster" required />
+      </div>
+      <div class="field">
+        <label>E-Mail</label>
+        <input type="email" id="reg-email" placeholder="deine@email.ch" required />
+      </div>
+      <div class="field">
+        <label>Passwort</label>
+        <input type="password" id="reg-password" placeholder="Mindestens 6 Zeichen" required />
+      </div>
+      <div class="auth-error" id="reg-error"></div>
+      <button type="submit" class="btn-primary btn-full">Konto erstellen</button>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="app hidden">
+
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <div class="mobile-logo">
+      <span class="logo-icon">✦</span>
+      <span>Taskflow</span>
+    </div>
+    <button id="menu-toggle" class="hamburger" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">Taskflow</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="active">
+        <span class="nav-icon">◈</span> Aufgaben
+      </button>
+      <button class="nav-item" data-view="completed">
+        <span class="nav-icon">◉</span> Erledigt
+      </button>
+      <button class="nav-item" data-view="calendar">
+        <span class="nav-icon">▦</span> Kalender
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-chip" id="user-chip">
+        <div class="user-avatar" id="user-avatar">M</div>
+        <span id="user-name">Benutzer</span>
+      </div>
+      <button class="logout-btn" id="logout-btn" title="Ausloggen">➜]</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="page-header">
+      <div class="page-title-wrap">
+        <h1 class="page-title" id="page-title">Aufgaben</h1>
+        <span class="todo-count" id="todo-count">0</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-export" id="export-btn">
+          <span>↓</span> PDF
+        </button>
+        <button class="btn-new" id="new-todo-btn">
+          <span>+</span> Neue Aufgabe
+        </button>
+      </div>
+    </header>
+
+    <!-- Active Todos View -->
+    <div id="view-active" class="view">
+      <div id="todo-list" class="todo-list">
+        <div class="empty-state" id="empty-active">
+          <div class="empty-icon">◈</div>
+          <p>Keine offenen Aufgaben</p>
+          <span>Erstelle deine erste Aufgabe</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed Todos View -->
+    <div id="view-completed" class="view hidden">
+      <div id="completed-list" class="todo-list">
+        <div class="empty-state" id="empty-completed">
+          <div class="empty-icon">◉</div>
+          <p>Noch nichts erledigt</p>
+          <span>Erledigte Aufgaben erscheinen hier</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar View -->
+    <div id="view-calendar" class="view hidden">
+      <div class="calendar-wrap">
+        <div class="calendar-nav">
+          <button id="cal-prev">‹</button>
+          <h2 id="cal-month-label"></h2>
+          <button id="cal-next">›</button>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+      </div>
+      <div class="calendar-sidebar">
+        <h3>Aufgaben am <span id="cal-selected-date">—</span></h3>
+        <div id="cal-day-todos" class="cal-day-list">
+          <p class="cal-no-todos">Kein Tag gewählt</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL: Create/Edit Todo -->
+<div id="todo-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Neue Aufgabe</h2>
+      <button class="modal-close" id="modal-close">×</button>
+    </div>
+    <form id="todo-form">
+      <div class="field">
+        <label>Titel *</label>
+        <input type="text" id="todo-title" placeholder="Was muss erledigt werden?" required />
+      </div>
+      <div class="field">
+        <label>Beschreibung</label>
+        <textarea id="todo-desc" placeholder="Details, Notizen, Links…" rows="3"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Fälligkeitsdatum</label>
+          <input type="date" id="todo-date" />
+        </div>
+        <div class="field">
+          <label>Uhrzeit <span class="optional">(optional)</span></label>
+          <input type="time" id="todo-time" />
+        </div>
+      </div>
+      <input type="hidden" id="todo-edit-id" />
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="modal-cancel">Abbrechen</button>
+        <button type="submit" class="btn-primary" id="modal-submit">Erstellen</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Detail View -->
+<div id="detail-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="detail-title">Aufgabe</h2>
+      <button class="modal-close" id="detail-close">×</button>
+    </div>
+    <div class="detail-body">
+      <div class="detail-meta" id="detail-meta"></div>
+      <p class="detail-desc" id="detail-desc"></p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="detail-complete-btn">Erledigt</button>
+      <button class="btn-ghost" id="detail-edit-btn">Bearbeiten</button>
+      <button class="btn-danger" id="detail-delete-btn">Löschen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
