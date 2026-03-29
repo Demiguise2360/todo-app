@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-mongo-deployment
+  namespace: taskira
+  labels:
+    app: todo-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-mongo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: todo-mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:7
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-mongo-service
+  namespace: taskira
+  labels:
+    app: todo-mongo
+spec:
+  selector:
+    app: todo-mongo
+  type: ClusterIP
+  ports:
+  - name: mongo
+    protocol: TCP
+    port: 27017
+    targetPort: 27017
